@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head><title>Solve {{ problem.title }}</title></head>
+<body style="display:flex;">
+  <div style="width:50%; padding:20px; border-right:1px solid #ccc;">
+    <h2>{{ problem.title }}</h2>
+    <p><strong>Description:</strong> {{ problem.description }}</p>
+    <p><strong>Constraints:</strong> {{ problem.constraints }}</p>
+    <h4>Sample Test Cases:</h4>
+    <ul>
+      {% for tc in problem.testcases.all %}
+        {% if not tc.is_hidden %}
+          <li><b>Input:</b> {{ tc.input_data }}<br><b>Output:</b> {{ tc.expected_output }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div style="width:50%; padding:20px;">
+    <form method="POST">
+      {% csrf_token %}
+      <label for="language">Language:</label>
+      
+    <select name="language">
+      <option value="python" {% if language == "python" %}selected{% endif %}>Python</option>
+      <option value="c" {% if language == "c" %}selected{% endif %}>C</option>
+      <option value="cpp" {% if language == "cpp" %}selected{% endif %}>C++</option>
+      <option value="java" {% if language == "java" %}selected{% endif %}>Java</option>
+    </select>
+
+      <br><br>
+      <textarea name="code" rows="20" cols="70">{{ code }}</textarea><br>
+      <button type="submit">Run Code</button>
+    </form>
+
+    {% if output %}
+      <h3>Output:</h3>
+      <pre>{{ output }}</pre>
+    {% endif %}
+  </div>
+</body>
+</html>

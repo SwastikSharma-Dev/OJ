@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ problem.title }}</title></head>
+<body>
+  <h2>{{ problem.title }}</h2>
+
+  <h3>Description</h3>
+  <p>{{ problem.description }}</p>
+
+  <h3>Constraints</h3>
+  <p>{{ problem.constraints }}</p>
+
+  <h3>Test Cases</h3>
+  <pre>{{ problem.test_cases }}</pre>
+
+  <h3>Hidden Test Cases</h3>
+  <pre>{{ problem.hidden_test_cases }}</pre>
+
+  <a href="{% url 'dashboard_view' %}">← Back to Dashboard</a>
+</body>
+</html>
