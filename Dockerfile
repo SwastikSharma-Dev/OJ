@@ -33,6 +33,9 @@ RUN mkdir -p /app/compiler/user_code
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 
+# Create superuser if environment variables are provided
+RUN python manage.py create_superuser || echo "Superuser creation skipped"
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
