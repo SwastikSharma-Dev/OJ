@@ -1,28 +1,106 @@
-<!DOCTYPE html>
-<html>
-<head><title>Dashboard</title></head>
-<body>
-  <h2>Welcome, {{ user.username }}</h2>
+{% extends 'layout.html' %}
 
-  <table border="1">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Problem</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for problem in problems %}
-      <tr>
-        <td>{{ problem.id }}</td>
-        <td>{{ problem.title }}</td>
-        <td><a href="{% url 'problem_detail' problem.id %}">View</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+{% block title %}Dashboard - HeatCode{% endblock %}
 
-  <a href="{% url 'logout_view' %}">Logout</a>
-</body>
-</html>
+{% block content %}
+<div class="card">
+    <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+        <i class="fas fa-fire" style="font-size: 2rem; color: #667eea; margin-right: 1rem;"></i>
+        <div>
+            <h1 style="margin: 0; color: #333;">Welcome back, {{ user.username }}!</h1>
+            <p style="margin: 0; color: #666; font-size: 1.1rem;">Ready to solve some coding challenges?</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="color: #333; margin: 0;">
+            <i class="fas fa-list-alt"></i> Problem List
+        </h2>
+        <div style="color: #666;">
+            <i class="fas fa-chart-line"></i> {{ problems|length }} Problems Available
+        </div>
+    </div>
+
+    {% if problems %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag"></i> ID</th>
+                        <th><i class="fas fa-puzzle-piece"></i> Problem Title</th>
+                        <th><i class="fas fa-signal"></i> Difficulty</th>
+                        <th><i class="fas fa-tags"></i> Tags</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for problem in problems %}
+                    <tr>
+                        <td>
+                            <span style="font-weight: 600; color: #667eea;">#{{ problem.problem_id }}</span>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: #333;">{{ problem.title }}</div>
+                            <div style="font-size: 0.875rem; color: #666; margin-top: 0.25rem;">
+                                {{ problem.description|truncatechars:80 }}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="difficulty-badge difficulty-{{ problem.difficulty|lower }}">
+                                {{ problem.difficulty }}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
+                                {% for tag in problem.tags.all|slice:":3" %}
+                                    <span style="background: rgba(79, 172, 254, 0.1); color: #4facfe; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.75rem;">
+                                        {{ tag.name }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <a href="{% url 'problem_detail' problem.id %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <a href="{% url 'solve_problem' problem.id %}" class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                    <i class="fas fa-code"></i> Solve
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem; color: #666;">
+            <i class="fas fa-inbox" style="font-size: 4rem; margin-bottom: 1rem; color: #ccc;"></i>
+            <h3>No Problems Available</h3>
+            <p>Check back later for new coding challenges!</p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.table-responsive {
+    overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+    .table th:nth-child(3),
+    .table td:nth-child(3),
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        display: none;
+    }
+    
+    .table td:nth-child(5) {
+        white-space: nowrap;
+    }
+}
+</style>
+{% endblock %}

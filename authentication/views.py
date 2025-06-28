@@ -63,7 +63,7 @@ def register_page(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+            password = form.cleaned_data['password1']
 
             if User.objects.filter(username=username).exists():
                 return render(request, 'authentication/register.html', {'form':form, 'error': 'Username Already Exists'})

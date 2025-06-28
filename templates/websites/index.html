@@ -1,157 +1,270 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeatCode</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends 'layout.html' %}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+{% block title %}HeatCode - Ultimate Coding Challenge Platform{% endblock %}
 
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+{% block extra_css %}
+<style>
+.hero-section {
+    text-align: center;
+    padding: 4rem 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin: 2rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-        h1 {
-            color: #fff;
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient 3s ease infinite;
-        }
+.hero-title {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 3s ease infinite;
+}
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-        .subtitle {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
+.hero-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    font-weight: 300;
+}
 
-        .nav-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+.cta-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
 
-        .nav-btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            color: #fff;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            min-width: 150px;
-        }
+.cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.25rem 2.5rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+    justify-content: center;
+}
 
-        .nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
+.cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
 
-        .nav-btn:hover::before {
-            left: 100%;
-        }
+.cta-btn:hover::before {
+    left: 100%;
+}
 
-        .login-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
-        }
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
 
-        .register-btn {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
-        }
+.features-section {
+    margin: 4rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
 
-        .dashboard-btn {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
-        }
+.feature-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease;
+}
 
-        .nav-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
+.feature-card:hover {
+    transform: translateY(-5px);
+}
 
-        .nav-btn:active {
-            transform: translateY(-1px);
-        }
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-            }
+.feature-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+}
 
-            h1 {
-                font-size: 2.5rem;
-            }
+.feature-description {
+    color: #666;
+    line-height: 1.6;
+}
 
-            .nav-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-btn {
+        width: 250px;
+    }
+    
+    .features-section {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
 
-            .nav-btn {
-                width: 200px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>HeatCode</h1>
-        <p class="subtitle">Your Ultimate Coding Challenge Platform</p>
-        
-        <div class="nav-buttons">
-            <a href="{% url 'login_page' %}" class="nav-btn login-btn">
-                Login
+{% block content %}
+<div class="hero-section">
+    <div style="margin-bottom: 2rem;">
+        <i class="fas fa-fire" style="font-size: 4rem; color: rgba(255, 255, 255, 0.8);"></i>
+    </div>
+    <h1 class="hero-title">HeatCode</h1>
+    <p class="hero-subtitle">Your Ultimate Coding Challenge Platform</p>
+    <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Sharpen your programming skills with challenging problems, compete with developers worldwide, 
+        and track your progress as you master algorithms and data structures.
+    </p>
+    
+    <div class="cta-buttons">
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register_page' %}" class="cta-btn btn-success">
+                <i class="fas fa-rocket"></i>
+                Get Started
             </a>
-            <a href="{% url 'register_page' %}" class="nav-btn register-btn">
-                Register
+            <a href="{% url 'login_page' %}" class="cta-btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i>
+                Sign In
             </a>
-            <a href="{% url 'dashboard_view' %}" class="nav-btn dashboard-btn">
-                Dashboard
+        {% else %}
+            <a href="{% url 'dashboard_view' %}" class="cta-btn btn-warning">
+                <i class="fas fa-tachometer-alt"></i>
+                Go to Dashboard
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-code"></i>
+        </div>
+        <h3 class="feature-title">Multiple Languages</h3>
+        <p class="feature-description">
+            Solve problems in Python, C, C++, Java, and more. Choose your preferred programming language 
+            and focus on what matters most - the algorithm.
+        </p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h3 class="feature-title">Progressive Difficulty</h3>
+        <p class="feature-description">
+            Start with easy problems and gradually work your way up to expert-level challenges. 
+            Our difficulty system helps you learn at your own pace.
+        </p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+        </div>
+        <h3 class="feature-title">Real-time Execution</h3>
+        <p class="feature-description">
+            Test your code instantly with our fast, secure online compiler. Get immediate feedback 
+            and iterate quickly to find the perfect solution.
+        </p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-trophy"></i>
+        </div>
+        <h3 class="feature-title">Track Progress</h3>
+        <p class="feature-description">
+            Monitor your improvement over time, see which topics you've mastered, 
+            and identify areas where you can continue to grow.
+        </p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-building"></i>
+        </div>
+        <h3 class="feature-title">Company Problems</h3>
+        <p class="feature-description">
+            Practice with problems from top tech companies. Prepare for technical interviews 
+            with real questions used by industry leaders.
+        </p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3 class="feature-title">Community Driven</h3>
+        <p class="feature-description">
+            Join a community of passionate developers. Learn from others, share your solutions, 
+            and grow together in your coding journey.
+        </p>
+    </div>
+</div>
+
+{% if not user.is_authenticated %}
+<div style="text-align: center; margin: 4rem 0;">
+    <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #333; margin-bottom: 1rem;">Ready to Start Your Journey?</h2>
+        <p style="color: #666; margin-bottom: 2rem;">
+            Join thousands of developers who are already improving their skills with HeatCode.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'register_page' %}" class="btn btn-success" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                <i class="fas fa-user-plus"></i> Create Free Account
+            </a>
+            <a href="{% url 'login_page' %}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                <i class="fas fa-sign-in-alt"></i> Sign In
             </a>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endif %}
+{% endblock %}

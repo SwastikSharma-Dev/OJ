@@ -5,13 +5,16 @@ services:
     build: .
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
     environment:
-      - DEBUG=1
-    command: python manage.py runserver 0.0.0.0:8000
+      - DEBUG=0
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME:-admin}
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL:-admin@heatcode.com}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD:-HeatCode123!}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-your-secret-key-here}
+    restart: unless-stopped
     
-  # Optional: Add PostgreSQL database for production
+  # Production setup with PostgreSQL
+  # Uncomment below for production deployment
   # db:
   #   image: postgres:15
   #   volumes:
@@ -19,7 +22,8 @@ services:
   #   environment:
   #     POSTGRES_DB: heatcode
   #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
+  #   restart: unless-stopped
   #   ports:
   #     - "5432:5432"
 

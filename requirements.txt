@@ -4,11 +4,19 @@ Django==5.2.3
 # JWT authentication
 PyJWT==2.8.0
 
-# ASGI server for production (optional)
-# uvicorn==0.24.0
+# Production database support
+psycopg2-binary==2.9.9
+
+# Static files serving
+whitenoise==6.6.0
+
+# Production server
+gunicorn==21.2.0
+
+# Environment variables management
+python-decouple==3.8
 
 # Additional useful packages for Django development
-# python-decouple==3.8  # For environment variables management
 # Pillow==10.1.0  # For image handling if needed in future
 # django-cors-headers==4.3.1  # For CORS if building an API
 # requests==2.31.0  # For making HTTP requests if needed

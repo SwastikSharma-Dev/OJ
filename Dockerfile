@@ -15,6 +15,7 @@ RUN apt-get update \
         g++ \
         default-jdk \
         build-essential \
+        postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file
@@ -29,23 +30,21 @@ COPY . /app/
 # Create directories for user code compilation
 RUN mkdir -p /app/compiler/user_code
 
-# Run database migrations
-RUN python manage.py makemigrations
-RUN python manage.py migrate
+# Create a non-root user first
+RUN adduser --disabled-password --gecos '' appuser
 
-# Create superuser if environment variables are provided
-RUN python manage.py create_superuser || echo "Superuser creation skipped"
+# Create entrypoint script
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Change ownership of the app directory
+RUN chown -R appuser:appuser /app
 
-# Create a non-root user
-RUN adduser --disabled-password --gecos '' appuser \
-    && chown -R appuser:appuser /app
+# Switch to non-root user
 USER appuser
 
 # Expose port
 EXPOSE 8000
 
-# Run the application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Use entrypoint script
+ENTRYPOINT ["/app/docker-entrypoint.sh"]

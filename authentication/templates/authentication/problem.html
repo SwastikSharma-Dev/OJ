@@ -1,21 +1,113 @@
-<!DOCTYPE html>
-<html>
-<head><title>{{ problem.title }}</title></head>
-<body>
-  <h2>{{ problem.title }}</h2>
+{% extends 'layout.html' %}
 
-  <h3>Description</h3>
-  <p>{{ problem.description }}</p>
+{% block title %}{{ problem.title }} - HeatCode{% endblock %}
 
-  <h3>Constraints</h3>
-  <p>{{ problem.constraints }}</p>
+{% block content %}
+<div style="margin-bottom: 1rem;">
+    <a href="{% url 'dashboard_view' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
 
-  <h3>Test Cases</h3>
-  <pre>{{ problem.test_cases }}</pre>
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+        <div>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                <h1 style="color: #333; margin: 0;">{{ problem.title }}</h1>
+                <span class="difficulty-badge difficulty-{{ problem.difficulty|lower }}">
+                    {{ problem.difficulty }}
+                </span>
+            </div>
+            <p style="color: #666; margin: 0;">Problem ID: #{{ problem.problem_id }}</p>
+        </div>
+        <a href="{% url 'solve_problem' problem.id %}" class="btn btn-success" style="font-size: 1.1rem;">
+            <i class="fas fa-code"></i> Start Solving
+        </a>
+    </div>
 
-  <h3>Hidden Test Cases</h3>
-  <pre>{{ problem.hidden_test_cases }}</pre>
+    <div style="display: grid; gap: 2rem;">
+        <div>
+            <h3 style="color: #333; margin-bottom: 1rem; display: flex; align-items: center;">
+                <i class="fas fa-file-alt" style="margin-right: 0.5rem; color: #667eea;"></i>
+                Description
+            </h3>
+            <div style="background: rgba(79, 172, 254, 0.05); padding: 1.5rem; border-radius: 10px; border-left: 4px solid #4facfe;">
+                <p style="margin: 0; line-height: 1.6; color: #555;">{{ problem.description }}</p>
+            </div>
+        </div>
 
-  <a href="{% url 'dashboard_view' %}">← Back to Dashboard</a>
-</body>
-</html>
+        <div>
+            <h3 style="color: #333; margin-bottom: 1rem; display: flex; align-items: center;">
+                <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem; color: #fa709a;"></i>
+                Constraints
+            </h3>
+            <div style="background: rgba(250, 112, 154, 0.05); padding: 1.5rem; border-radius: 10px; border-left: 4px solid #fa709a;">
+                <p style="margin: 0; line-height: 1.6; color: #555;">{{ problem.constraints }}</p>
+            </div>
+        </div>
+
+        {% if problem.tags.all %}
+        <div>
+            <h3 style="color: #333; margin-bottom: 1rem; display: flex; align-items: center;">
+                <i class="fas fa-tags" style="margin-right: 0.5rem; color: #43e97b;"></i>
+                Tags
+            </h3>
+            <div style="display: flex; flex-wrap: gap: 0.5rem;">
+                {% for tag in problem.tags.all %}
+                    <span style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.875rem; font-weight: 600;">
+                        {{ tag.name }}
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if problem.companies.all %}
+        <div>
+            <h3 style="color: #333; margin-bottom: 1rem; display: flex; align-items: center;">
+                <i class="fas fa-building" style="margin-right: 0.5rem; color: #74b9ff;"></i>
+                Companies
+            </h3>
+            <div style="display: flex; flex-wrap: gap: 0.5rem;">
+                {% for company in problem.companies.all %}
+                    <span style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.875rem; font-weight: 600;">
+                        {{ company.name }}
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div>
+            <h3 style="color: #333; margin-bottom: 1rem; display: flex; align-items: center;">
+                <i class="fas fa-vial" style="margin-right: 0.5rem; color: #667eea;"></i>
+                Sample Test Cases
+            </h3>
+            <div style="background: rgba(102, 126, 234, 0.05); padding: 1.5rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                {% for testcase in problem.testcases.all %}
+                    {% if not testcase.is_hidden %}
+                        <div style="margin-bottom: 1.5rem; {% if not forloop.last %}border-bottom: 1px solid #e1e5e9; padding-bottom: 1.5rem;{% endif %}">
+                            <div style="margin-bottom: 0.75rem;">
+                                <strong style="color: #333;">Input:</strong>
+                                <pre style="background: #f8f9fa; padding: 0.75rem; border-radius: 8px; margin: 0.5rem 0; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.875rem; color: #2d3748; overflow-x: auto;">{{ testcase.input_data }}</pre>
+                            </div>
+                            <div>
+                                <strong style="color: #333;">Expected Output:</strong>
+                                <pre style="background: #f8f9fa; padding: 0.75rem; border-radius: 8px; margin: 0.5rem 0; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.875rem; color: #2d3748; overflow-x: auto;">{{ testcase.expected_output }}</pre>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p style="color: #666; margin: 0; font-style: italic;">No test cases available for preview.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e1e5e9; text-align: center;">
+        <a href="{% url 'solve_problem' problem.id %}" class="btn btn-success" style="font-size: 1.2rem; padding: 1rem 2rem;">
+            <i class="fas fa-rocket"></i> Start Coding Challenge
+        </a>
+    </div>
+</div>
+{% endblock %}
