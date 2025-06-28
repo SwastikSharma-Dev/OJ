@@ -170,10 +170,11 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = False  # Set to True when using HTTPS
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://swastiksharma.me",
-    "https://swastiksharma.me",
-    "http://www.swastiksharma.me",
-    "https://www.swastiksharma.me",
+    "http://swastikis.me",
+    "https://swastikis.me",
+    "http://www.swastikis.me",
+    "https://www.swastikis.me",
 ]
+
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
