@@ -175,3 +175,5 @@ CSRF_TRUSTED_ORIGINS = [
     "http://www.swastiksharma.me",
     "https://www.swastiksharma.me",
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -261,3 +261,12 @@ JWT_EXP_DELTA_SECONDS = 3600
 
 # Redirect unauthenticated users to login page
 LOGIN_URL = '/login/'
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://swastiksharma.me",
+    "https://swastiksharma.me",
+    "http://www.swastiksharma.me",
+    "https://www.swastiksharma.me",
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
